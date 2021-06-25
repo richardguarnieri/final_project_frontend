@@ -1,32 +1,70 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, React } from 'react';
 import * as d3 from 'd3';
 
 const Data = () => {
 
-    const herokuBackend = 'https://itesm-project2-backend.herokuapp.com'
+    const herokuBackend = 'http://3.17.42.22:5000'
 
     const [genre, setGenre] = useState('');
     const [language, setLanguage] = useState('');
 
     const tbody = d3.select("tbody");
 
+    useEffect(()=>{
+        const general = async() => {
+
+            let menuGenre = d3.selectAll("#genre-movie");
+            menuGenre.selectAll("option").remove();
+            let menuLanguage = d3.selectAll("#language-movie");
+            menuLanguage.selectAll("option").remove();
+            try{
+                // Populate genre & language dropdown
+                const genre_response = await fetch(`${herokuBackend}/genres`);
+                const genre_data = await genre_response.json();
+
+                Object.entries(genre_data).forEach(function([key, value]){
+
+                    menuGenre.append("option")
+                    .text(value)
+                    .attr("value", value);
+                });
+
+                const language_response = await fetch(`${herokuBackend}/language`);
+                const language_data = await language_response.json();
+                Object.entries(language_data).forEach(function([key, value]){
+                    menuLanguage.append("option")
+                    .text(value)
+                    .attr("value", value);
+                });
+
+
+            } catch(err) {
+                console.log(err);
+            }
+        }
+        general();
+
+    }, []);
+
     const filterData = async () => {
         try {
-            const response = await fetch(`${herokuBackend}/all_movies`);
+            console.log(`${genre} & ${language}`);
+            const response = await fetch(`${herokuBackend}/filter/${genre}/${language}`);
             const data = await response.json();
             deleteTable();
-            console.log(data);
-            let filteredArray = Object.values(data).map(d => d)
+            let filteredArray = Object.values(data).map(d => d);
+            console.log(filteredArray);
+
+
             filteredArray.forEach(entry => {
                 entry.genre_1 = entry.genre_1 ? entry.genre_1 : 'None'
                 entry.lang_1 = entry.lang_1 ? entry.lang_1 : 'None'
                 return entry
             });
-            filteredArray = filteredArray.filter(
-                entry => ((entry.genre_1.toLowerCase() === genre.toLowerCase()) && (entry.lang_1.toLowerCase() === language.toLowerCase()))
-            );
+
             filteredArray = filteredArray.sort((a, b) => b.avg_vote_f - a.avg_vote_f)
+            filteredArray.slice(0,100);
             filteredArray.forEach(d => {
                 let newRow = tbody.append('tr')
                     newRow.append('td').text(d.title)
@@ -56,12 +94,18 @@ const Data = () => {
                     <p class="lead">Please ensure to fill in both selections</p>
                     <form action="" onSubmit="return false;">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="genre" placeholder="Romance" onChange={(e) => {setGenre(e.target.value)}} />
-                            <label for="genre">Romance, Drama, Crime, Fantasy, Comedy, Biography...</label>
+                            <select id="genre-movie" className="form-select mb-5" 
+                            onChange={(e) => {
+                                setGenre(e.target.value);
+                            }}>
+                            </select>  
                         </div>
                         <div class="form-floating mt-3">
-                            <input type="text" class="form-control" id="language" placeholder="English" onChange={(e) => {setLanguage(e.target.value)}}/>
-                            <label for="language">English, Spanish, Italian, French, German...</label>
+                            <select id="language-movie" className="form-select mb-5" 
+                            onChange={(e) => {
+                                setLanguage(e.target.value);
+                            }}>
+                            </select> 
                         </div>
                         <button type='button' onClick={filterData} class="btn btn-dark mt-3">Find Movies</button>
                     </form>
