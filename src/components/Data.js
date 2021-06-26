@@ -96,7 +96,7 @@ const Data = () => {
             <div class="row pt-5">
                 <div class="col">
                     <h4 class="pb-3 mb-0">Search for Movies</h4>
-                    <p>Note: The default value for Genre is "Action" and Language is "English"</p>
+                    <p>Note: The default value for Genre is "Action" and Language is "Aboriginal"</p>
                     <p class="lead">Please ensure to fill in both selections</p>
                     <form action="" onSubmit="return false;">
                         <div class="form-floating">
