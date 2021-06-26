@@ -7,7 +7,7 @@ const Data = () => {
     const herokuBackend = 'https://ec2-3-17-42-22.us-east-2.compute.amazonaws.com:5000'
 
     const [genre, setGenre] = useState('Action');
-    const [language, setLanguage] = useState('English');
+    const [language, setLanguage] = useState('Aboriginal');
 
     const tbody = d3.select("tbody");
 
@@ -57,7 +57,7 @@ const Data = () => {
             console.log(`${genre} & ${language}`);
             const response = await fetch(`${herokuBackend}/filter/${genre}/${language}`);
             const data = await response.json();
-            
+
             let filteredArray = Object.values(data).map(d => d);
             console.log(filteredArray);
 
