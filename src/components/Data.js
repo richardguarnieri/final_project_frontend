@@ -53,10 +53,11 @@ const Data = () => {
 
     const filterData = async () => {
         try {
+            deleteTable();
             console.log(`${genre} & ${language}`);
             const response = await fetch(`${herokuBackend}/filter/${genre}/${language}`);
             const data = await response.json();
-            deleteTable();
+            
             let filteredArray = Object.values(data).map(d => d);
             console.log(filteredArray);
 
