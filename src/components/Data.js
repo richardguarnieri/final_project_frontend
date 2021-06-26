@@ -6,8 +6,8 @@ const Data = () => {
 
     const herokuBackend = 'https://ec2-3-17-42-22.us-east-2.compute.amazonaws.com:5000'
 
-    const [genre, setGenre] = useState('');
-    const [language, setLanguage] = useState('');
+    const [genre, setGenre] = useState('Action');
+    const [language, setLanguage] = useState('English');
 
     const tbody = d3.select("tbody");
 
@@ -46,6 +46,9 @@ const Data = () => {
         }
         general();
 
+        filterData();
+        console.log('si funciono');
+
     }, []);
 
     const filterData = async () => {
@@ -65,7 +68,7 @@ const Data = () => {
             });
 
             filteredArray = filteredArray.sort((a, b) => b.avg_vote_f - a.avg_vote_f)
-            filteredArray.slice(0,100);
+            filteredArray = filteredArray.slice(0,50);
             filteredArray.forEach(d => {
                 let newRow = tbody.append('tr')
                     newRow.append('td').text(d.title)
@@ -92,6 +95,7 @@ const Data = () => {
             <div class="row pt-5">
                 <div class="col">
                     <h4 class="pb-3 mb-0">Search for Movies</h4>
+                    <p>Note: The default value for Genre is "Action" and Language is "English"</p>
                     <p class="lead">Please ensure to fill in both selections</p>
                     <form action="" onSubmit="return false;">
                         <div class="form-floating">
@@ -108,7 +112,8 @@ const Data = () => {
                             }}>
                             </select> 
                         </div>
-                        <button type='button' onClick={filterData} class="btn btn-dark mt-3">Find Movies</button>
+                        <button type='button' onClick={filterData} class="btn btn-dark mx-3 mt-3">Find Movies</button>
+                        <button type='button' onClick={deleteTable} class="btn btn-dark mx-3 mt-3">Clear Movies</button>
                     </form>
                 </div>
             </div>
