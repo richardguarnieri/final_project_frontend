@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import * as d3 from 'd3';
 import * as tf from '@tensorflow/tfjs';
 import modelI from '../tfjsmodel/model.json';
-import inputss from './inputs.csv';
+import inputss from '../inputs.csv';
 //const tfn = require("@tensorflow/tfjs-node");
 
 const modelJson = require('../tfjsmodel/model.json');
