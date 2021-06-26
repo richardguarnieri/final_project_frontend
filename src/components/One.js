@@ -37,7 +37,7 @@ const One = () => {
     };
     // Backend & Event Listener variables
     const [year, setYear] = useState('');
-    const herokuBackend = 'http://3.17.42.22:5000'
+    const herokuBackend = 'https://ec2-3-17-42-22.us-east-2.compute.amazonaws.com:5000'
 
     useEffect(() => {    
         const general = async () => {
