@@ -37,7 +37,37 @@ const Data = () => {
                     .text(value)
                     .attr("value", value);
                 });
+                
+                deleteTable();
+                const response = await fetch(`${herokuBackend}/filter/${genre}/${language}`);
+                const data = await response.json();
 
+                let filteredArray = Object.values(data).map(d => d);
+                console.log(filteredArray);
+
+
+                filteredArray.forEach(entry => {
+                    entry.genre_1 = entry.genre_1 ? entry.genre_1 : 'None'
+                    entry.lang_1 = entry.lang_1 ? entry.lang_1 : 'None'
+                    return entry
+                });
+
+
+                filteredArray = filteredArray.sort((a, b) => b.avg_vote_f - a.avg_vote_f);
+                filteredArray = filteredArray.slice(0,50);
+                let tbody2 = d3.select("tbody"); 
+                filteredArray.forEach(d => {
+                    let newRow = tbody2.append('tr')
+                        newRow.append('td').text(d.title)
+                        newRow.append('td').text(d.year_mv)
+                        newRow.append('td').text(d.genre_1)
+                        newRow.append('td').text(d.lang_1)
+                        newRow.append('td').text(d.country_1)
+                        newRow.append('td').text(d.duration)
+                        newRow.append('td').text(d.avg_vote_f);
+                    console.log(newRow);
+                });
+                console.log("Aquí estoy4");
             
 
             } catch(err) {
@@ -46,8 +76,6 @@ const Data = () => {
         }
         general();
 
-        filterData();
-        console.log('si funciono');
 
     }, []);
 
@@ -68,7 +96,7 @@ const Data = () => {
                 return entry
             });
 
-            filteredArray = filteredArray.sort((a, b) => b.avg_vote_f - a.avg_vote_f)
+            filteredArray = filteredArray.sort((a, b) => b.avg_vote_f - a.avg_vote_f);
             filteredArray = filteredArray.slice(0,50);
             filteredArray.forEach(d => {
                 let newRow = tbody.append('tr')
@@ -99,14 +127,14 @@ const Data = () => {
                     <p>Note: The default value for Genre is "Action" and Language is "Aboriginal"</p>
                     <p class="lead">Please ensure to fill in both selections</p>
                     <form action="" onSubmit="return false;">
-                        <div class="form-floating">
+                        <div class="form">
                             <select id="genre-movie" className="form-select mb-5" 
                             onChange={(e) => {
                                 setGenre(e.target.value);
                             }}>
                             </select>  
                         </div>
-                        <div class="form-floating mt-3">
+                        <div class="form mt-3">
                             <select id="language-movie" className="form-select mb-5" 
                             onChange={(e) => {
                                 setLanguage(e.target.value);
