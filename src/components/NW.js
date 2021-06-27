@@ -716,7 +716,7 @@ const NW = () => {
                       <h2 className="display-6 pt-3 pb-3">Regressional neural network</h2>
                       <p className="lead">Description</p>
                       <p>Select up to three genres, and 5 countries and languages for a movie, with a possible year of realease and duration, get a rating prediction!
-                        (Mean absolute error: 0.70 trained with over 74 thousand movies and tested on over 6 thousand)
+                        (Mean absolute error: 0.70 trained with over 74 thousand movies and tested on over 6 thousand) The R-squared of our model is 0.92!
                       </p>
                   </div>
                   <hr className='mt-4 mb-4'/>
@@ -759,9 +759,9 @@ const NW = () => {
                   
                 </div>
                 <div className="col text-center">
-                  <button onClick={() => predictions()} className="dropbtn">Predict</button>
                   <h1 id='pt'>The predicted rating for this movie is:</h1>
                   <h2 id ="prediction">10</h2>
+                  <button onClick={() => predictions()} className="dropbtn">Predict</button>
                 </div> 
 
               </div>
